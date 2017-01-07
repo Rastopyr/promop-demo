@@ -6,6 +6,17 @@ export const template = () => `
   <div class="${styles.control} ${styles['rotate-control']}"></div>
 `;
 
+export function updateRotateControl({ x, y, w } = {}) {
+  const control = document.querySelector(
+    `.${styles['rotate-wrapper']}`
+  );
+
+  control.style.left = `${x + (w/2)}px`;
+  control.style.top = `${y}px`;
+
+  return control;
+}
+
 function rotate(control, e) {
   const editor = document.querySelector(`.${editorStyles.editor}`);
   const rect = document.querySelector(`.${editorStyles.rect}`);

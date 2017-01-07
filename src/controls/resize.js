@@ -1,6 +1,7 @@
 
 import { CONTROL_OFFSET } from '../config';
 import { getAngles, getDomVal } from '../helpers';
+import { updateRotateControl } from './rotate';
 
 import styles from './controls.css';
 import editorStyles from '../editor/editor.css';
@@ -15,17 +16,6 @@ export const template = () => `
 export function resize(control, e) {
   const editor = document.querySelector(`.${editorStyles.editor}`);
   const rect = document.querySelector(`.${editorStyles.rect}`);
-
-  // let rectW;
-  // let rectH;
-  // let rectX;
-  // let rectY;
-  // let rectSide;
-  // let rectRatio;
-  // let aspectRatio;
-  // let hypotenuse;
-  //
-  // let controlPos;
 
   let rectS;
   let controlScale;
@@ -109,6 +99,12 @@ export function resize(control, e) {
     default:
       return false;
   }
+
+  updateRotateControl({
+    x: rect.offsetLeft,
+    y: rect.offsetTop,
+    w: rect.offsetWidth,
+  });
 }
 
 export function controlHandler(control) {
