@@ -16,96 +16,95 @@ export function resize(control, e) {
   const editor = document.querySelector(`.${editorStyles.editor}`);
   const rect = document.querySelector(`.${editorStyles.rect}`);
 
-  let rectW;
-  let rectH;
+  // let rectW;
+  // let rectH;
+  // let rectX;
+  // let rectY;
+  // let rectSide;
+  // let rectRatio;
+  // let aspectRatio;
+  // let hypotenuse;
+  //
+  // let controlPos;
+
+  let rectS;
+  let controlScale;
+  let clientPos;
+  let controlPos;
+
   let rectX;
   let rectY;
-  let rectSide;
-  let rectRatio;
-  let aspectRatio;
-  let hypotenuse;
-  let clientPos;
-  let clientPosY;
-  let clientPosX;
-  let controlPos;
 
   const angle = control.getAttribute('data-angle');
   const allControls = getAngles();
+  const clientScale = Math.min( e.pageX / rect.offsetWidth, e.pageX / rect.offsetHeight);
+
+  const rectWidth = allControls.c.offsetLeft - allControls.d.offsetLeft;
+  const rectHeight = allControls.c.offsetTop - allControls.b.offsetTop;
 
   switch (angle) {
     case 'a':
-      clientPos = Math.max(e.pageY, e.pageX);
-      controlPos = clientPos - CONTROL_OFFSET;
+      rectS = Math.max(
+        allControls.c.offsetTop - e.pageY, allControls.c.offsetLeft - e.pageX
+      ) + (CONTROL_OFFSET * 2);
 
-      control.style.top = `${controlPos}px`;
-      control.style.left = `${controlPos}px`;
+      control.style.top = `${(allControls.c.offsetTop - rectS) + CONTROL_OFFSET}px`;
+      control.style.left = `${(allControls.c.offsetLeft - rectS) + CONTROL_OFFSET}px`;
 
-      rectW = allControls.c.offsetLeft - clientPos + (CONTROL_OFFSET * 2);
-      rectH = allControls.c.offsetTop - clientPos + (CONTROL_OFFSET * 2);
+      rect.style.top = control.style.top;
+      rect.style.left = control.style.left;
 
-      rect.style.top = `${controlPos}px`;
-      rect.style.left = `${controlPos}px`;
+      rect.style.width = `${rectS}px`;
+      rect.style.height = `${rectS}px`;
 
-      rect.style.width = `${rectW}px`;
-      rect.style.height = `${rectH}px`;
-
-      allControls.b.style.top = `${controlPos}px`;
-      allControls.d.style.left = `${controlPos}px`;
+      allControls.b.style.top = control.style.top;
+      allControls.d.style.left = control.style.left;
       break;
     case 'b':
-      // clientPos = Math.min(e.pageY, e.pageX);
-      // controlPos = clientPos - CONTROL_OFFSET;
+      rectS = Math.max(
+        allControls.d.offsetTop - e.pageY, e.pageX - allControls.d.offsetLeft
+      ) - (CONTROL_OFFSET * 2);
 
-      //
-      // rectW = allControls.c.offsetLeft - clientPos + (CONTROL_OFFSET * 2);
-      // rectH = allControls.d.offsetTop - clientPos + (CONTROL_OFFSET * 2);
-      //
-      // control.style.top = `${clientPos}px`;
-      // control.style.left = `${clientPos}px`;
+      rect.style.width = `${rectS}px`;
+      rect.style.height = `${rectS}px`;
 
-      // rectW = allControls.c.offsetLeft - allControls.d.offsetLeft;
-      // rectH = allControls.d.offsetTop - e.pageY + (CONTROL_OFFSET * 2);
+      control.style.top = `${(allControls.d.offsetTop - rectS) + CONTROL_OFFSET}px`;
+      control.style.left = `${(allControls.d.offsetLeft + rectS) + CONTROL_OFFSET}px`;
 
-      // rectY = e.pageY - CONTROL_OFFSET;
-      // rectX = e.pageX - CONTROL_OFFSET;
+      rect.style.top = control.style.top;
 
-      // rect.style.top = `${rectY}px`;
-
-      // rect.style.width = `${rect.offsetWidth - (rect.offsetWidth - e.pageX)}px`;
-      // rect.style.height = `${rectW}px`;
-      //
-      // control.style.top = `${rectY}px`;
-      // control.style.left = `${rectX}px`;
-      //
-      // allControls.a.style.top = `${rectY}px`;
-      // allControls.c.style.left = control.style.left;
+      allControls.a.style.top = control.style.top;
+      allControls.c.style.left = control.style.left;
       break;
     case 'c':
-      clientPos = Math.min(e.pageY, e.pageX);
+      rectS = Math.max(
+        e.pageY - allControls.a.offsetTop, e.pageX - allControls.d.offsetLeft
+      ) - (CONTROL_OFFSET * 2);
 
-      control.style.top = `${clientPos}px`;
-      control.style.left = `${clientPos}px`;
+      control.style.top = `${(allControls.a.offsetTop + rectS) + CONTROL_OFFSET}px`;
+      control.style.left = `${(allControls.a.offsetLeft + rectS) + CONTROL_OFFSET}px`;
 
-      rect.style.width = `${clientPos - rect.offsetTop}px`;
-      rect.style.height = `${clientPos - rect.offsetLeft}px`;
+      rect.style.width = `${rectS}px`;
+      rect.style.height = `${rectS}px`;
 
-      allControls.d.style.top = `${clientPos}px`;
-      allControls.b.style.left = `${clientPos}px`;
+      allControls.d.style.top = control.style.top;
+      allControls.b.style.left = control.style.left;
       break;
     case 'd':
-      // clientPos = Math.max(e.pageY - rect.offsetHeight, e.pageX);
-      // controlPos = clientPos - CONTROL_OFFSET;
-      //
-      // control.style.top = `${allControls.b.offsetLeft - clientPos + (CONTROL_OFFSET * 2)}px`;
-      // control.style.left = `${controlPos}px`;
-      //
-      // rect.style.left = `${controlPos}px`;
-      //
-      // rect.style.height = `${allControls.b.offsetLeft - clientPos + (CONTROL_OFFSET * 2)}px`;
-      // rect.style.width = `${allControls.b.offsetLeft - clientPos + (CONTROL_OFFSET * 2)}px`;
-      //
-      // allControls.a.style.left = `${controlPos}px`;
-      // allControls.c.style.top = `${allControls.b.offsetLeft - clientPos + (CONTROL_OFFSET * 2)}px`;
+      rectS = Math.max(
+        e.pageY - allControls.b.offsetTop, allControls.d.offsetLeft - e.pageX
+      ) - (CONTROL_OFFSET * 2);
+
+      rect.style.width = `${rectS}px`;
+      rect.style.height = `${rectS}px`;
+
+      control.style.top = `${(allControls.b.offsetTop + rectS) + CONTROL_OFFSET}px`;
+      control.style.left = `${(allControls.b.offsetLeft - rectS) + CONTROL_OFFSET}px`;
+
+      rect.style.left = control.style.left;
+
+      allControls.a.style.left = control.style.left;
+      allControls.c.style.top = control.style.top;
       break;
     default:
       return false;
@@ -141,7 +140,7 @@ export function init() {
   resizeWrapper.setAttribute('class', styles['resize-wrapper']);
   resizeWrapper.innerHTML = template();
 
-  // resizeWrapper.querySelectorAll(`.${styles.control}`).forEach(controlHandler);
+  resizeWrapper.querySelectorAll(`.${styles.control}`).forEach(controlHandler);
 
   return resizeWrapper;
 }

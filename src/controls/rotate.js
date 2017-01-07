@@ -10,14 +10,14 @@ function rotate(control, e) {
   const editor = document.querySelector(`.${editorStyles.editor}`);
   const rect = document.querySelector(`.${editorStyles.rect}`);
 
-  const boxCenter=[
+  const rectCenter=[
     rect.offsetLeft + (rect.offsetWidth / 2),
     rect.offsetTop + (rect.offsetHeight / 2)
   ];
 
   const angle = Math.atan2(
-    e.pageX - boxCenter[0],
-    - (e.pageY- boxCenter[1])
+    e.pageX - rectCenter[0],
+    - (e.pageY - rectCenter[1])
   ) * (180/Math.PI);
 
   editor.style.transform = `rotate(${angle + 180}deg)`;
