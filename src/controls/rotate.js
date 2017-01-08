@@ -21,17 +21,17 @@ function rotate(control, e) {
   const editor = document.querySelector(`.${editorStyles.editor}`);
   const rect = document.querySelector(`.${editorStyles.rect}`);
 
-  const rectCenter=[
-    rect.offsetLeft + (rect.offsetWidth / 2),
-    rect.offsetTop + (rect.offsetHeight / 2)
+  const rectCenter = [
+    (editor.offsetLeft + editor.offsetWidth) / 2,
+    (editor.offsetTop + editor.offsetHeight) / 2
   ];
 
   const angle = Math.atan2(
     e.pageX - rectCenter[0],
     - (e.pageY - rectCenter[1])
-  ) * (180/Math.PI);
+  ) * (180 / Math.PI) + 180;
 
-  editor.style.transform = `rotate(${angle + 180}deg)`;
+  editor.style.transform = `rotate(${angle}deg)`;
 }
 
 function controlHandler(control) {

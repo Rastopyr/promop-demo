@@ -13,107 +13,96 @@ export const template = () => `
   <div class="${styles.control}" data-angle="d"></div>
 `;
 
-export function resize(control, e) {
-  const editor = document.querySelector(`.${editorStyles.editor}`);
-  const rect = document.querySelector(`.${editorStyles.rect}`);
+// const old = {
+//   w: 0,
+//   h: 0,
+// };
 
-  let rectS;
-  let controlScale;
-  let clientPos;
+export function resize({
+  control,
+  editorW,
+  editorH,
+  editorHyp,
+  ratio,
+  angle,
+  bcr,
+}, e) {
   let controlPos;
+  let newSide;
 
-  let rectX;
-  let rectY;
+  let eW;
+  let eH;
 
-  const angle = control.getAttribute('data-angle');
-  const allControls = getAngles();
-  const clientScale = Math.min( e.pageX / rect.offsetWidth, e.pageX / rect.offsetHeight);
+  let editorMargin;
 
-  const rectWidth = allControls.c.offsetLeft - allControls.d.offsetLeft;
-  const rectHeight = allControls.c.offsetTop - allControls.b.offsetTop;
+  const editor = document.querySelector(`.${editorStyles.editor}`);
 
-  switch (angle) {
+  switch(angle) {
     case 'a':
-      rectS = Math.max(
-        allControls.c.offsetTop - e.pageY, allControls.c.offsetLeft - e.pageX
-      ) + (CONTROL_OFFSET * 2);
+      newSide = Math.max(e.pageY - bcr.top, e.pageX - bcr.left);
 
-      control.style.top = `${(allControls.c.offsetTop - rectS) + CONTROL_OFFSET}px`;
-      control.style.left = `${(allControls.c.offsetLeft - rectS) + CONTROL_OFFSET}px`;
+      editor.style.width = `${bcr.width - newSide}px`;
+      editor.style.height = `${bcr.height - newSide}px`;
 
-      rect.style.top = control.style.top;
-      rect.style.left = control.style.left;
-
-      rect.style.width = `${rectS}px`;
-      rect.style.height = `${rectS}px`;
-
-      allControls.b.style.top = control.style.top;
-      allControls.d.style.left = control.style.left;
+      editor.style.top = `${bcr.bottom - editor.offsetHeight}px`;
+      editor.style.left = `${bcr.right - editor.offsetWidth}px`;
       break;
     case 'b':
-      rectS = Math.max(
-        allControls.d.offsetTop - e.pageY, e.pageX - allControls.d.offsetLeft
-      ) - (CONTROL_OFFSET * 2);
+      newSide = Math.max(e.pageY - bcr.top, bcr.width - e.pageX);
 
-      rect.style.width = `${rectS}px`;
-      rect.style.height = `${rectS}px`;
+      editor.style.width = `${bcr.width - newSide}px`;
+      editor.style.height = `${bcr.height - newSide}px`;
 
-      control.style.top = `${(allControls.d.offsetTop - rectS) + CONTROL_OFFSET}px`;
-      control.style.left = `${(allControls.d.offsetLeft + rectS) + CONTROL_OFFSET}px`;
-
-      rect.style.top = control.style.top;
-
-      allControls.a.style.top = control.style.top;
-      allControls.c.style.left = control.style.left;
+      editor.style.top = `${bcr.bottom - editor.offsetHeight}px`;
       break;
     case 'c':
-      rectS = Math.max(
-        e.pageY - allControls.a.offsetTop, e.pageX - allControls.d.offsetLeft
-      ) - (CONTROL_OFFSET * 2);
+      newSide = Math.min(e.pageY - bcr.top, e.pageX - bcr.left);
 
-      control.style.top = `${(allControls.a.offsetTop + rectS) + CONTROL_OFFSET}px`;
-      control.style.left = `${(allControls.a.offsetLeft + rectS) + CONTROL_OFFSET}px`;
-
-      rect.style.width = `${rectS}px`;
-      rect.style.height = `${rectS}px`;
-
-      allControls.d.style.top = control.style.top;
-      allControls.b.style.left = control.style.left;
+      editor.style.width = `${newSide}px`;
+      editor.style.height = `${newSide }px`;
       break;
     case 'd':
-      rectS = Math.max(
-        e.pageY - allControls.b.offsetTop, allControls.d.offsetLeft - e.pageX
-      ) - (CONTROL_OFFSET * 2);
+      newSide = Math.min(e.pageY - bcr.top, bcr.right - e.pageX);
 
-      rect.style.width = `${rectS}px`;
-      rect.style.height = `${rectS}px`;
 
-      control.style.top = `${(allControls.b.offsetTop + rectS) + CONTROL_OFFSET}px`;
-      control.style.left = `${(allControls.b.offsetLeft - rectS) + CONTROL_OFFSET}px`;
+      console.log(newSide);
 
-      rect.style.left = control.style.left;
+      editor.style.width = `${newSide}px`;
+      editor.style.height = `${newSide}px`;
 
-      allControls.a.style.left = control.style.left;
-      allControls.c.style.top = control.style.top;
+      editor.style.left = `${bcr.right - editor.offsetWidth}px`;
       break;
     default:
-      return false;
+      break;
   }
 
-  updateRotateControl({
-    x: rect.offsetLeft,
-    y: rect.offsetTop,
-    w: rect.offsetWidth,
-  });
+  // updateRotateControl({
+  //   x: rect.offsetLeft,
+  //   y: rect.offsetTop,
+  //   w: rect.offsetWidth,
+  // });
 }
 
 export function controlHandler(control) {
   let isDrag = false;
   let resizeControl = null;
 
+  let opts = {};
+
   control.onmousedown = function(e) {
+    const editor = document.querySelector(`.${editorStyles.editor}`);
+
     isDrag = true;
-    resizeControl = resize.bind(window, e.target);
+
+    opts.control = e.target;
+    opts.editorW = editor.offsetWidth;
+    opts.editorH = editor.offsetHeight;
+    opts.editorHyp = Math.sqrt(Math.pow(editor.offsetWidth, 2) + Math.pow(editor.offsetHeight, 2));
+    opts.ratio = editor.offsetWidth / editor.offsetHeight;
+    opts.angle = e.target.getAttribute('data-angle');
+    opts.bcr = editor.getBoundingClientRect();
+
+    resizeControl = resize.bind(window, opts);
   };
 
   document.addEventListener('mousemove', function(e) {

@@ -20,16 +20,16 @@
 
     &[data-angle="b"] {
       top: 0px;
-      left: 300px;
+      left: 100%;
     }
 
     &[data-angle="c"] {
-      top: 300px;
-      left: 300px;
+      top: 100%;
+      left: 100%;
     }
 
     &[data-angle="d"] {
-      top: 300px;
+      top: 100%;
       left: 0px;
     }
   }
