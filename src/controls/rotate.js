@@ -25,8 +25,6 @@ function rotate(control, e) {
     editor.offsetTop + (editor.offsetHeight / 2)
   ];
 
-  console.log(editorCenter);
-
   const angle = Math.atan2(
     e.pageX - editorCenter[0],
     - (e.pageY - editorCenter[1])
