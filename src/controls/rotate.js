@@ -19,19 +19,20 @@ export function updateRotateControl({ x, y, w } = {}) {
 
 function rotate(control, e) {
   const editor = document.querySelector(`.${editorStyles.editor}`);
-  const rect = document.querySelector(`.${editorStyles.rect}`);
 
-  const rectCenter = [
-    (editor.offsetLeft + editor.offsetWidth) / 2,
-    (editor.offsetTop + editor.offsetHeight) / 2
+  const editorCenter = [
+    editor.offsetLeft + (editor.offsetWidth / 2),
+    editor.offsetTop + (editor.offsetHeight / 2)
   ];
 
+  console.log(editorCenter);
+
   const angle = Math.atan2(
-    e.pageX - rectCenter[0],
-    - (e.pageY - rectCenter[1])
+    e.pageX - editorCenter[0],
+    - (e.pageY - editorCenter[1])
   ) * (180 / Math.PI) + 180;
 
-  editor.style.transform = `rotate(${angle}deg)`;
+  editor.style.transform = `rotate(${angle + editor.offsetTop}deg)`;
 }
 
 function controlHandler(control) {

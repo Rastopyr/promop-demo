@@ -64,9 +64,6 @@ export function resize({
     case 'd':
       newSide = Math.min(e.pageY - bcr.top, bcr.right - e.pageX);
 
-
-      console.log(newSide);
-
       editor.style.width = `${newSide}px`;
       editor.style.height = `${newSide}px`;
 
@@ -75,12 +72,6 @@ export function resize({
     default:
       break;
   }
-
-  // updateRotateControl({
-  //   x: rect.offsetLeft,
-  //   y: rect.offsetTop,
-  //   w: rect.offsetWidth,
-  // });
 }
 
 export function controlHandler(control) {
