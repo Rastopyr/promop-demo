@@ -1,11 +1,9 @@
 
 import { init as initEditor } from './editor';
-import { getAngles } from './helpers';
 
 import './index.css';
 
-
-function init() {
+function init () {
   document.body.appendChild(initEditor());
 }
 

@@ -6,18 +6,18 @@ export const template = () => `
   <div class="${styles.control} ${styles['rotate-control']}"></div>
 `;
 
-export function updateRotateControl({ x, y, w } = {}) {
+export function updateRotateControl ({ x, y, w } = {}) {
   const control = document.querySelector(
     `.${styles['rotate-wrapper']}`
   );
 
-  control.style.left = `${x + (w/2)}px`;
+  control.style.left = `${x + (w / 2)}px`;
   control.style.top = `${y}px`;
 
   return control;
 }
 
-function rotate(control, e) {
+function rotate (control, e) {
   const editor = document.querySelector(`.${editorStyles.editor}`);
 
   const editorCenter = [
@@ -27,22 +27,22 @@ function rotate(control, e) {
 
   const angle = Math.atan2(
     e.pageX - editorCenter[0],
-    - (e.pageY - editorCenter[1])
+    -(e.pageY - editorCenter[1])
   ) * (180 / Math.PI) + 180;
 
   editor.style.transform = `rotate(${angle + editor.offsetTop}deg)`;
 }
 
-function controlHandler(control) {
+function controlHandler (control) {
   let isDrag = false;
   let rotateControl = null;
 
-  control.onmousedown = function(e) {
+  control.onmousedown = function (e) {
     isDrag = true;
     rotateControl = rotate.bind(window, e.target);
   };
 
-  document.addEventListener('mousemove', function(e) {
+  document.addEventListener('mousemove', function (e) {
     if (!isDrag) {
       return;
     }
@@ -50,13 +50,13 @@ function controlHandler(control) {
     rotateControl(e);
   });
 
-  document.addEventListener('mouseup', function() {
+  document.addEventListener('mouseup', function () {
     isDrag = false;
     rotateControl = null;
   });
 }
 
-export function init() {
+export function init () {
   const rotateWrapper = document.createElement('div');
 
   rotateWrapper.setAttribute('class', styles['rotate-wrapper']);

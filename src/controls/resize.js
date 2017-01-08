@@ -1,8 +1,4 @@
 
-import { CONTROL_OFFSET } from '../config';
-import { getAngles, getDomVal } from '../helpers';
-import { updateRotateControl } from './rotate';
-
 import styles from './controls.css';
 import editorStyles from '../editor/editor.css';
 
@@ -13,31 +9,20 @@ export const template = () => `
   <div class="${styles.control}" data-angle="d"></div>
 `;
 
-// const old = {
-//   w: 0,
-//   h: 0,
-// };
-
-export function resize({
+export function resize ({
   control,
   editorW,
   editorH,
   editorHyp,
   ratio,
   angle,
-  bcr,
+  bcr
 }, e) {
-  let controlPos;
   let newSide;
-
-  let eW;
-  let eH;
-
-  let editorMargin;
 
   const editor = document.querySelector(`.${editorStyles.editor}`);
 
-  switch(angle) {
+  switch (angle) {
     case 'a':
       newSide = Math.max(e.pageY - bcr.top, e.pageX - bcr.left);
 
@@ -59,7 +44,7 @@ export function resize({
       newSide = Math.min(e.pageY - bcr.top, e.pageX - bcr.left);
 
       editor.style.width = `${newSide}px`;
-      editor.style.height = `${newSide }px`;
+      editor.style.height = `${newSide}px`;
       break;
     case 'd':
       newSide = Math.min(e.pageY - bcr.top, bcr.right - e.pageX);
@@ -74,13 +59,13 @@ export function resize({
   }
 }
 
-export function controlHandler(control) {
+export function controlHandler (control) {
   let isDrag = false;
   let resizeControl = null;
 
   let opts = {};
 
-  control.onmousedown = function(e) {
+  control.onmousedown = function (e) {
     const editor = document.querySelector(`.${editorStyles.editor}`);
 
     isDrag = true;
@@ -96,7 +81,7 @@ export function controlHandler(control) {
     resizeControl = resize.bind(window, opts);
   };
 
-  document.addEventListener('mousemove', function(e) {
+  document.addEventListener('mousemove', function (e) {
     if (!isDrag) {
       return;
     }
@@ -104,13 +89,13 @@ export function controlHandler(control) {
     resizeControl(e);
   });
 
-  document.addEventListener('mouseup', function() {
+  document.addEventListener('mouseup', function () {
     isDrag = false;
     resizeControl = null;
   });
 };
 
-export function init() {
+export function init () {
   const resizeWrapper = document.createElement('div');
 
   resizeWrapper.setAttribute('class', styles['resize-wrapper']);

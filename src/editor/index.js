@@ -7,7 +7,7 @@ const editorTemplate = () => `
   <div class="${styles.rect}"></div>
 `;
 
-export function init() {
+export function init () {
   const editorWrapper = document.createElement('div');
   editorWrapper.setAttribute('class', styles.editor);
   editorWrapper.innerHTML = editorTemplate();

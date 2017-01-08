@@ -4,7 +4,7 @@ import { init as initRotate } from './rotate';
 
 import styles from './controls.css';
 
-export function init() {
+export function init () {
   const controlWrapper = document.createElement('div');
 
   controlWrapper.setAttribute('class', styles['control-wrapper']);
